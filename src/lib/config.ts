@@ -57,7 +57,7 @@ type RecursivePartial<T> = {
 };
 
 const loadConfig = () => {
-  // Server-side only
+  // Server-side onlys
   if (typeof window === 'undefined') {
     // Debug logging for Railway
     console.log('🔍 Environment PORT:', process.env.PORT);
