@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "npm run db:push && next build",
-    "start": "node .next/standalone/server.js",
+    "start": "HOST=0.0.0.0 PORT=${PORT:-3000} node .next/standalone/server.js",
     "lint": "next lint",
     "format:write": "prettier . --write",
     "db:push": "drizzle-kit push"
