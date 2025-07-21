@@ -26,7 +26,7 @@ const EmptyChat = ({
 }) => {
   return (
     <div className="relative">
-      <div className="absolute w-full flex flex-row items-center justify-end mr-5 mt-5">
+      <div className="absolute top-5 right-5 z-10">
         <Link href="/settings">
           <Settings className="cursor-pointer lg:hidden" />
         </Link>
