@@ -73,7 +73,10 @@ export const getSimilarityMeasure = () =>
 
 export const getKeepAlive = () => loadConfig().GENERAL.KEEP_ALIVE;
 
-export const getOpenaiApiKey = () => loadConfig().MODELS.OPENAI.API_KEY;
+export const getOpenaiApiKey = () => {
+  const configKey = loadConfig().MODELS.OPENAI.API_KEY;
+  return configKey || process.env.OPENAI_API_KEY || '';
+};
 
 export const getGroqApiKey = () => loadConfig().MODELS.GROQ.API_KEY;
 
