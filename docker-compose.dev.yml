@@ -1,0 +1,44 @@
+services:
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    volumes:
+      - ./searxng:/etc/searxng:rw
+    ports:
+      - 4000:8080
+    networks:
+      - perplexica-network
+    restart: unless-stopped
+
+  app:
+    build:
+      context: .
+      dockerfile: app.dockerfile
+      target: builder  # Use the builder stage for dev
+    command: ["yarn", "dev"]  # Run dev server instead of production
+    environment:
+      - SEARXNG_API_URL=http://searxng:8080
+      - DATA_DIR=/home/perplexica
+    ports:
+      - 3000:3000
+    networks:
+      - perplexica-network
+    volumes:
+      - backend-dbstore:/home/perplexica/data
+      - uploads:/home/perplexica/uploads
+      - ./config.toml:/home/perplexica/config.toml
+      - ./src:/home/perplexica/src  # Mount source code for hot reload
+      - ./public:/home/perplexica/public
+      - ./package.json:/home/perplexica/package.json
+      - ./yarn.lock:/home/perplexica/yarn.lock
+      - ./next.config.mjs:/home/perplexica/next.config.mjs
+      - ./tailwind.config.ts:/home/perplexica/tailwind.config.ts
+      - ./tsconfig.json:/home/perplexica/tsconfig.json
+      - ./postcss.config.js:/home/perplexica/postcss.config.js
+    restart: unless-stopped
+
+networks:
+  perplexica-network:
+
+volumes:
+  backend-dbstore:
+  uploads: 
