@@ -145,9 +145,9 @@ const Page = () => {
     string | null
   >(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [automaticImageSearch, setAutomaticImageSearch] = useState(false);
+  const [automaticImageSearch, setAutomaticImageSearch] = useState(true);
   const [automaticVideoSearch, setAutomaticVideoSearch] = useState(false);
-  const [systemInstructions, setSystemInstructions] = useState<string>('');
+  const [systemInstructions, setSystemInstructions] = useState('For any itemz we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.');
   const [measureUnit, setMeasureUnit] = useState<'Imperial' | 'Metric'>(
     'Metric',
   );
@@ -180,8 +180,24 @@ const Page = () => {
         localStorage.getItem('chatModelProvider') ||
         defaultChatModelProvider ||
         '';
+      
+      // Prefer GPT-4 models - look for openai provider first
+      let preferredChatModel = '';
+      if (data.chatModelProviders && data.chatModelProviders['openai']) {
+        // Look for GPT-4 models first
+        const gpt4Model = data.chatModelProviders['openai'].find((model: any) => 
+          model.name.toLowerCase().includes('gpt-4')
+        );
+        if (gpt4Model) {
+          preferredChatModel = gpt4Model.name;
+        } else if (data.chatModelProviders['openai'].length > 0) {
+          preferredChatModel = data.chatModelProviders['openai'][0].name;
+        }
+      }
+      
       const chatModel =
         localStorage.getItem('chatModel') ||
+        preferredChatModel ||
         (data.chatModelProviders &&
         data.chatModelProviders[chatModelProvider]?.length > 0
           ? data.chatModelProviders[chatModelProvider][0].name
@@ -204,14 +220,29 @@ const Page = () => {
       setChatModels(data.chatModelProviders || {});
       setEmbeddingModels(data.embeddingModelProviders || {});
 
+      // Save preferred defaults to localStorage if they were set
+      if (preferredChatModel && !localStorage.getItem('chatModel')) {
+        localStorage.setItem('chatModelProvider', 'openai');
+        localStorage.setItem('chatModel', preferredChatModel);
+      }
+
       setAutomaticImageSearch(
-        localStorage.getItem('autoImageSearch') === 'true',
+        localStorage.getItem('autoImageSearch') === 'true' || localStorage.getItem('autoImageSearch') === null,
       );
       setAutomaticVideoSearch(
         localStorage.getItem('autoVideoSearch') === 'true',
       );
+      setSystemInstructions(
+        localStorage.getItem('systemInstructions') || 'For any itemz we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.',
+      );
 
-      setSystemInstructions(localStorage.getItem('systemInstructions')!);
+      // Set defaults in localStorage if they don't exist
+      if (localStorage.getItem('autoImageSearch') === null) {
+        localStorage.setItem('autoImageSearch', 'true');
+      }
+      if (localStorage.getItem('systemInstructions') === null) {
+        localStorage.setItem('systemInstructions', 'For any itemz we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.');
+      }
 
       setMeasureUnit(
         localStorage.getItem('measureUnit')! as 'Imperial' | 'Metric',
