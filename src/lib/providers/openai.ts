@@ -11,34 +11,6 @@ import { Embeddings } from '@langchain/core/embeddings';
 
 const openaiChatModels: Record<string, string>[] = [
   {
-    displayName: 'GPT-3.5 Turbo',
-    key: 'gpt-3.5-turbo',
-  },
-  {
-    displayName: 'GPT-4',
-    key: 'gpt-4',
-  },
-  {
-    displayName: 'GPT-4 turbo',
-    key: 'gpt-4-turbo',
-  },
-  {
-    displayName: 'GPT-4 omni',
-    key: 'gpt-4o',
-  },
-  {
-    displayName: 'GPT-4 omni mini',
-    key: 'gpt-4o-mini',
-  },
-  {
-    displayName: 'GPT 4.1 nano',
-    key: 'gpt-4.1-nano',
-  },
-  {
-    displayName: 'GPT 4.1 mini',
-    key: 'gpt-4.1-mini',
-  },
-  {
     displayName: 'GPT 4.1',
     key: 'gpt-4.1',
   },
