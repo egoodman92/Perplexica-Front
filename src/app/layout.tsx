@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import Sidebar from '@/components/Sidebar';
 import { Toaster } from 'sonner';
 import ThemeProvider from '@/components/theme/Provider';
+import Script from 'next/script';
 
 const montserrat = Montserrat({
   weight: ['300', '400', '500', '700'],
@@ -26,6 +27,21 @@ export default function RootLayout({
 }>) {
   return (
     <html className="h-full" lang="en" suppressHydrationWarning>
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17434555568"
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17434555568');
+          `}
+        </Script>
+      </head>
       <body className={cn('h-full', montserrat.className)}>
         <ThemeProvider>
           <Sidebar>{children}</Sidebar>
