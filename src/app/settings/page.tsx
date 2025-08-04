@@ -147,7 +147,7 @@ const Page = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [automaticImageSearch, setAutomaticImageSearch] = useState(true);
   const [automaticVideoSearch, setAutomaticVideoSearch] = useState(false);
-  const [systemInstructions, setSystemInstructions] = useState('For any itemz we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.');
+  const [systemInstructions, setSystemInstructions] = useState('For any items we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.');
   const [measureUnit, setMeasureUnit] = useState<'Imperial' | 'Metric'>(
     'Metric',
   );
@@ -184,11 +184,17 @@ const Page = () => {
       // Prefer GPT-4 models - look for openai provider first
       let preferredChatModel = '';
       if (data.chatModelProviders && data.chatModelProviders['openai']) {
-        // Look for GPT-4 models first
+        // Look for GPT-4.1 models but exclude mini versions
+        const gpt41Model = data.chatModelProviders['openai'].find((model: any) => 
+          model.name.toLowerCase().includes('4.1') && !model.name.toLowerCase().includes('mini')
+        );
         const gpt4Model = data.chatModelProviders['openai'].find((model: any) => 
           model.name.toLowerCase().includes('gpt-4')
         );
-        if (gpt4Model) {
+        
+        if (gpt41Model) {
+          preferredChatModel = gpt41Model.name;
+        } else if (gpt4Model) {
           preferredChatModel = gpt4Model.name;
         } else if (data.chatModelProviders['openai'].length > 0) {
           preferredChatModel = data.chatModelProviders['openai'][0].name;
@@ -233,7 +239,7 @@ const Page = () => {
         localStorage.getItem('autoVideoSearch') === 'true',
       );
       setSystemInstructions(
-        localStorage.getItem('systemInstructions') || 'For any itemz we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.',
+        localStorage.getItem('systemInstructions') || 'For any items we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.',
       );
 
       // Set defaults in localStorage if they don't exist
@@ -241,7 +247,7 @@ const Page = () => {
         localStorage.setItem('autoImageSearch', 'true');
       }
       if (localStorage.getItem('systemInstructions') === null) {
-        localStorage.setItem('systemInstructions', 'For any itemz we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.');
+        localStorage.setItem('systemInstructions', 'For any items we ask about, mention cost and leadtime. If you can\'t find an exact price, always estimate a price. Other than that, try and be as succinct as possible.');
       }
 
       setMeasureUnit(
