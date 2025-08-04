@@ -63,9 +63,15 @@ const loadConfig = () => {
     console.log('🔍 Environment PORT:', process.env.PORT);
     console.log('🔍 Environment NODE_ENV:', process.env.NODE_ENV);
     
-    return toml.parse(
-      fs.readFileSync(path.join(process.cwd(), `${configFileName}`), 'utf-8'),
-    ) as any as Config;
+    try {
+      return toml.parse(
+        fs.readFileSync(path.join(process.cwd(), `${configFileName}`), 'utf-8'),
+      ) as any as Config;
+    } catch (error) {
+      console.warn('⚠️ config.toml not found, using environment variables');
+      // Return empty config object, functions will fall back to env vars
+      return {} as Config;
+    }
   }
 
   // Client-side fallback - settings will be loaded via API
@@ -73,41 +79,41 @@ const loadConfig = () => {
 };
 
 export const getSimilarityMeasure = () =>
-  loadConfig().GENERAL.SIMILARITY_MEASURE;
+  loadConfig().GENERAL?.SIMILARITY_MEASURE || process.env.SIMILARITY_MEASURE || 'cosine';
 
-export const getKeepAlive = () => loadConfig().GENERAL.KEEP_ALIVE;
+export const getKeepAlive = () => loadConfig().GENERAL?.KEEP_ALIVE || process.env.KEEP_ALIVE || '5m';
 
 export const getOpenaiApiKey = () => {
-  const configKey = loadConfig().MODELS.OPENAI.API_KEY;
+  const configKey = loadConfig().MODELS?.OPENAI?.API_KEY;
   return configKey || process.env.OPENAI_API_KEY || '';
 };
 
-export const getGroqApiKey = () => loadConfig().MODELS.GROQ.API_KEY;
+export const getGroqApiKey = () => loadConfig().MODELS?.GROQ?.API_KEY || process.env.GROQ_API_KEY || '';
 
-export const getAnthropicApiKey = () => loadConfig().MODELS.ANTHROPIC.API_KEY;
+export const getAnthropicApiKey = () => loadConfig().MODELS?.ANTHROPIC?.API_KEY || process.env.ANTHROPIC_API_KEY || '';
 
-export const getGeminiApiKey = () => loadConfig().MODELS.GEMINI.API_KEY;
+export const getGeminiApiKey = () => loadConfig().MODELS?.GEMINI?.API_KEY || process.env.GEMINI_API_KEY || '';
 
 export const getSearxngApiEndpoint = () =>
-  process.env.SEARXNG_API_URL || loadConfig().API_ENDPOINTS.SEARXNG;
+  process.env.SEARXNG_API_URL || loadConfig().API_ENDPOINTS?.SEARXNG || '';
 
-export const getOllamaApiEndpoint = () => loadConfig().MODELS.OLLAMA.API_URL;
+export const getOllamaApiEndpoint = () => loadConfig().MODELS?.OLLAMA?.API_URL || process.env.OLLAMA_API_URL || '';
 
-export const getDeepseekApiKey = () => loadConfig().MODELS.DEEPSEEK.API_KEY;
+export const getDeepseekApiKey = () => loadConfig().MODELS?.DEEPSEEK?.API_KEY || process.env.DEEPSEEK_API_KEY || '';
 
-export const getAimlApiKey = () => loadConfig().MODELS.AIMLAPI.API_KEY;
+export const getAimlApiKey = () => loadConfig().MODELS?.AIMLAPI?.API_KEY || process.env.AIMLAPI_API_KEY || '';
 
 export const getCustomOpenaiApiKey = () =>
-  loadConfig().MODELS.CUSTOM_OPENAI.API_KEY;
+  loadConfig().MODELS?.CUSTOM_OPENAI?.API_KEY || process.env.CUSTOM_OPENAI_API_KEY || '';
 
 export const getCustomOpenaiApiUrl = () =>
-  loadConfig().MODELS.CUSTOM_OPENAI.API_URL;
+  loadConfig().MODELS?.CUSTOM_OPENAI?.API_URL || process.env.CUSTOM_OPENAI_API_URL || '';
 
 export const getCustomOpenaiModelName = () =>
-  loadConfig().MODELS.CUSTOM_OPENAI.MODEL_NAME;
+  loadConfig().MODELS?.CUSTOM_OPENAI?.MODEL_NAME || process.env.CUSTOM_OPENAI_MODEL_NAME || '';
 
 export const getLMStudioApiEndpoint = () =>
-  loadConfig().MODELS.LM_STUDIO.API_URL;
+  loadConfig().MODELS?.LM_STUDIO?.API_URL || process.env.LM_STUDIO_API_URL || '';
 
 const mergeConfigs = (current: any, update: any): any => {
   if (update === null || update === undefined) {
