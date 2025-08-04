@@ -2,6 +2,8 @@ import { Settings } from 'lucide-react';
 import EmptyChatMessageInput from './EmptyChatMessageInput';
 import { File } from './ChatWindow';
 import Link from 'next/link';
+import WeatherWidget from './WeatherWidget';
+import NewsArticleWidget from './NewsArticleWidget';
 
 const EmptyChat = ({
   sendMessage,
@@ -47,6 +49,14 @@ const EmptyChat = ({
             files={files}
             setFiles={setFiles}
           />
+        </div>
+        <div className="flex flex-col w-full gap-4 mt-2 sm:flex-row sm:justify-center">
+          <div className="flex-1 w-full">
+            <WeatherWidget />
+          </div>
+          <div className="flex-1 w-full">
+            <NewsArticleWidget />
+          </div>
         </div>
       </div>
     </div>
