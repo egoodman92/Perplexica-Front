@@ -9,7 +9,9 @@
     "start": "next start --hostname 0.0.0.0 --port ${PORT:-3000}",
     "lint": "next lint",
     "format:write": "prettier . --write",
-    "db:push": "drizzle-kit push"
+    "db:push": "drizzle-kit push",
+    "restart": "docker-compose down && docker-compose up",
+    "restart-build": "docker-compose down && docker-compose up --build"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",
