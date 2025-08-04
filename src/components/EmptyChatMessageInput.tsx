@@ -2,7 +2,6 @@ import { ArrowRight } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import CopilotToggle from './MessageInputActions/Copilot';
-import Focus from './MessageInputActions/Focus';
 import Optimization from './MessageInputActions/Optimization';
 import Attach from './MessageInputActions/Attach';
 import { File } from './ChatWindow';
@@ -84,7 +83,6 @@ const EmptyChatMessageInput = ({
         />
         <div className="flex flex-row items-center justify-between mt-4">
           <div className="flex flex-row items-center space-x-2 lg:space-x-4">
-            <Focus focusMode={focusMode} setFocusMode={setFocusMode} />
             <Attach
               fileIds={fileIds}
               setFileIds={setFileIds}
