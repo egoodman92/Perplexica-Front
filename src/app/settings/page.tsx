@@ -822,7 +822,7 @@ const Page = () => {
                     OpenAI API Key
                   </p>
                   <Input
-                    type="text"
+                    type="password"
                     placeholder="OpenAI API Key"
                     value={config.openaiApiKey}
                     isSaving={savingStates['openaiApiKey']}
