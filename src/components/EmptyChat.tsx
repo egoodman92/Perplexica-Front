@@ -2,8 +2,22 @@ import { Settings } from 'lucide-react';
 import EmptyChatMessageInput from './EmptyChatMessageInput';
 import { File } from './ChatWindow';
 import Link from 'next/link';
-import WeatherWidget from './WeatherWidget';
-import NewsArticleWidget from './NewsArticleWidget';
+
+const SuggestedPrompt = ({ sendMessage, promptText }: { sendMessage: (message: string) => void; promptText: string }) => {
+  return (
+    <div className="bg-light-secondary dark:bg-dark-secondary p-3 rounded-lg border border-light-200 dark:border-dark-200 hover:bg-light-200 dark:hover:bg-dark-200 transition-colors cursor-pointer"
+         onClick={() => sendMessage(promptText)}>
+      <div className="flex flex-col space-y-1.5">
+        <p className="text-black/70 dark:text-white/70 text-sm leading-snug">
+          "{promptText}"
+        </p>
+        <p className="text-black/50 dark:text-white/50 text-xs">
+          Click to search →
+        </p>
+      </div>
+    </div>
+  );
+};
 
 const EmptyChat = ({
   sendMessage,
@@ -52,10 +66,10 @@ const EmptyChat = ({
         </div>
         <div className="flex flex-col w-full gap-4 mt-2 sm:flex-row sm:justify-center">
           <div className="flex-1 w-full">
-            <WeatherWidget />
+            <SuggestedPrompt sendMessage={sendMessage} promptText="Show me stainless steel ball valves with 1 inch NPT threading" />
           </div>
           <div className="flex-1 w-full">
-            <NewsArticleWidget />
+            <SuggestedPrompt sendMessage={sendMessage} promptText="Help me find 2 inch diaphragm valves that are triclamp compatible" />
           </div>
         </div>
       </div>
