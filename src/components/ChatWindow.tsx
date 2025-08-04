@@ -105,6 +105,24 @@ const checkConfig = async (
         }
 
         chatModel = Object.keys(chatModelProviders[chatModelProvider])[0];
+        
+        // Prefer GPT-4.1 models if available
+        if (chatModelProvider === 'openai' && chatModelProviders[chatModelProvider]) {
+          const models = chatModelProviders[chatModelProvider];
+          const gpt41Model = Object.keys(models).find(modelKey => 
+            models[modelKey].name?.toLowerCase().includes('4.1') && 
+            !models[modelKey].name?.toLowerCase().includes('mini')
+          );
+          const gpt4Model = Object.keys(models).find(modelKey => 
+            models[modelKey].name?.toLowerCase().includes('gpt-4')
+          );
+          
+          if (gpt41Model) {
+            chatModel = gpt41Model;
+          } else if (gpt4Model) {
+            chatModel = gpt4Model;
+          }
+        }
       }
 
       if (!embeddingModel || !embeddingModelProvider) {
@@ -165,6 +183,28 @@ const checkConfig = async (
               : Object.keys(chatModelProviders)[0]
           ],
         )[0];
+        
+        // Prefer GPT-4.1 models if available
+        const activeProvider = Object.keys(chatModelProviders[chatModelProvider]).length > 0
+          ? chatModelProvider
+          : Object.keys(chatModelProviders)[0];
+          
+        if (activeProvider === 'openai' && chatModelProviders[activeProvider]) {
+          const models = chatModelProviders[activeProvider];
+          const gpt41Model = Object.keys(models).find(modelKey => 
+            models[modelKey].name?.toLowerCase().includes('4.1') && 
+            !models[modelKey].name?.toLowerCase().includes('mini')
+          );
+          const gpt4Model = Object.keys(models).find(modelKey => 
+            models[modelKey].name?.toLowerCase().includes('gpt-4')
+          );
+          
+          if (gpt41Model) {
+            chatModel = gpt41Model;
+          } else if (gpt4Model) {
+            chatModel = gpt4Model;
+          }
+        }
 
         localStorage.setItem('chatModel', chatModel);
       }
