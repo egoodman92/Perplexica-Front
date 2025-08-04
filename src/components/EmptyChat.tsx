@@ -9,7 +9,7 @@ const SuggestedPrompt = ({ sendMessage, promptText }: { sendMessage: (message: s
          onClick={() => sendMessage(promptText)}>
       <div className="flex flex-col space-y-1.5">
         <p className="text-black/70 dark:text-white/70 text-sm leading-snug">
-          "{promptText}"
+          &ldquo;{promptText}&rdquo;
         </p>
         <p className="text-black/50 dark:text-white/50 text-xs">
           Click to search →
