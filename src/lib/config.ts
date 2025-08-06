@@ -59,10 +59,6 @@ type RecursivePartial<T> = {
 const loadConfig = () => {
   // Server-side only
   if (typeof window === 'undefined') {
-    // Debug logging for Railway
-    console.log('🔍 Environment PORT:', process.env.PORT);
-    console.log('🔍 Environment NODE_ENV:', process.env.NODE_ENV);
-    
     try {
       return toml.parse(
         fs.readFileSync(path.join(process.cwd(), `${configFileName}`), 'utf-8'),

@@ -64,12 +64,14 @@ const MessageInput = ({
       onSubmit={(e) => {
         if (loading) return;
         e.preventDefault();
+        console.log('User submitted follow-up message:', message);
         sendMessage(message);
         setMessage('');
       }}
       onKeyDown={(e) => {
         if (e.key === 'Enter' && !e.shiftKey && !loading) {
           e.preventDefault();
+          console.log('User pressed Enter (follow-up):', message);
           sendMessage(message);
           setMessage('');
         }

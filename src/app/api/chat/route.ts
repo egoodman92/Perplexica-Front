@@ -186,6 +186,8 @@ export const POST = async (req: Request) => {
     const body = (await req.json()) as Body;
     const { message } = body;
 
+    console.log('🗣️ User submitted message:', message.content);
+
     if (message.content === '') {
       return Response.json(
         {

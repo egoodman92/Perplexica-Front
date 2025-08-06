@@ -60,12 +60,14 @@ const EmptyChatMessageInput = ({
     <form
       onSubmit={(e) => {
         e.preventDefault();
+        console.log('User submitted message:', message);
         sendMessage(message);
         setMessage('');
       }}
       onKeyDown={(e) => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
+          console.log('User pressed Enter:', message);
           sendMessage(message);
           setMessage('');
         }
