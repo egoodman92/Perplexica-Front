@@ -30,7 +30,7 @@ export default function RootLayout({
       <head>
         <Script
           async
-          src="https://www.googletagmanager.com/gtag/js?id=AW-17434555568"
+          src="https://www.googletagmanager.com/gtag/js?id=AW-17460549485"
           strategy="afterInteractive"
         />
         <Script id="google-ads" strategy="afterInteractive">
